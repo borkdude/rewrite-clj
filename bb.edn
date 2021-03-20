@@ -1,5 +1,7 @@
 {:paths ["script"]
- :tasks {:lint {:task/type :babashka
+ :tasks {:clean {:task/type :main
+                 :main ci-tests/clean}
+         :lint {:task/type :babashka
                 :args [-m lint/lint]
                 :task/help "Usage: :lint
 
@@ -7,4 +9,7 @@ Lints sources."}
          :apply-import-vars
          {:task/type :babashka
           :args [-m apply-import-vars]
-          :task/help "Usage: :apply-import-vars [gen-code|check]"}}}
+          :task/help "Usage: :apply-import-vars [gen-code|check]"}
+         :ci-tests
+         {:task/type :babashka
+          :args [-m ci-tests]}}}

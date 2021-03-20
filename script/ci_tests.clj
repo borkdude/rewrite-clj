@@ -1,15 +1,14 @@
 #!/usr/bin/env bb
 
 (ns ci-tests
-  (:require [babashka.classpath :as cp]))
+  (:require [helper.env :as env]
+            [helper.fs :as fs]
+            [helper.shell :as shell]
+            [helper.status :as status]))
 
-(cp/add-classpath "./script")
-(require '[helper.env :as env]
-         '[helper.fs :as fs]
-         '[helper.shell :as shell]
-         '[helper.status :as status])
-
-(defn clean []
+(defn clean
+  "Cleans stuff!"
+  []
   (doseq [dir ["target" ".cpcache .shadow-cljs"]]
     (fs/delete-file-recursively dir true)))
 
@@ -39,7 +38,7 @@
     (shell/command ["bb" "./script/cljs_tests.clj" "--env" "planck" "--optimizations" "none"])
     (status/line :warn "skipping planck tests, they can only be run on linux and macOS")) )
 
-(defn main[]
+(defn -main []
   (env/assert-min-versions)
   (clean)
   (check-import-vars)
@@ -51,4 +50,3 @@
   (cljs-bootstrap-tests)
   nil)
 
-(main)
